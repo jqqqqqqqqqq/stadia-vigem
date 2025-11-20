@@ -1,6 +1,6 @@
 # Stadia-ViGEm
 
-Xbox 360 controller emulation for Stadia controller. Supports controllers connected via USB & bluetooth. Supports multiple devices and vibration (wired only). Forked from Mi-ViGEm (https://github.com/grayver/Mi-ViGEm) by grayver.
+Xbox 360 controller emulation for Stadia controller. Supports controllers connected via USB & bluetooth. Supports multiple devices and vibration. Forked from Mi-ViGEm (https://github.com/grayver/Mi-ViGEm) by grayver.
 Xbox 360 controller emulation driver is provided by ViGEm (https://github.com/ViGEm/ViGEmBus), by Benjamin Höglinger.
 
 ## Requirements

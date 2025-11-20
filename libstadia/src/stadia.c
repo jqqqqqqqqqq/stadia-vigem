@@ -118,29 +118,14 @@ static DWORD WINAPI _stadia_output_thread(LPVOID lparam)
 
         ReleaseSRWLockShared(&controller->vibration_lock);
 
-        INT result;
-        if (controller->bluetooth)
-        {
-            result = hid_send_feature_report(controller->device, vibration, sizeof(vibration));
-        }
-        else
-        {
-            result = hid_send_output_report(controller->device, vibration, sizeof(vibration), STADIA_READ_TIMEOUT);
-        }
+        INT result = hid_send_output_report(controller->device, vibration, sizeof(vibration), STADIA_READ_TIMEOUT);
         printf("send vibration small=%u big=%u ret=%d via %s\n", vibration[4], vibration[2], result,
                controller->bluetooth ? "bt" : "usb");
 
         ResetEvent(controller->output_event);
     }
 
-    if (controller->bluetooth)
-    {
-        hid_send_feature_report(controller->device, init_vibration, sizeof(init_vibration));
-    }
-    else
-    {
-        hid_send_output_report(controller->device, init_vibration, sizeof(init_vibration), STADIA_READ_TIMEOUT);
-    }
+    hid_send_output_report(controller->device, init_vibration, sizeof(init_vibration), STADIA_READ_TIMEOUT);
 
     return 0;
 }
@@ -149,19 +134,9 @@ struct stadia_controller *stadia_controller_create(struct hid_device *device)
 {
     BOOL bluetooth = _tcsistr(device->path, STADIA_BLT_HW_FILTER) != NULL;
 
-    if (bluetooth)
+    if (hid_send_output_report(device, init_vibration, sizeof(init_vibration), STADIA_READ_TIMEOUT) <= 0)
     {
-        if (hid_send_feature_report(device, init_vibration, sizeof(init_vibration)) <= 0)
-        {
-            last_error = STADIA_ERROR_VIBRATION_INIT_FAILURE;
-        }
-    }
-    else
-    {
-        if (hid_send_output_report(device, init_vibration, sizeof(init_vibration), STADIA_READ_TIMEOUT) <= 0)
-        {
-            last_error = STADIA_ERROR_VIBRATION_INIT_FAILURE;
-        }
+        last_error = STADIA_ERROR_VIBRATION_INIT_FAILURE;
     }
 
     SECURITY_ATTRIBUTES security = {.nLength = sizeof(SECURITY_ATTRIBUTES),

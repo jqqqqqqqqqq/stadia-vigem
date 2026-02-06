@@ -36,3 +36,5 @@ Thanks to following libraries and resources:
 - https://github.com/libusb/hidapi for HID implementation
 - https://github.com/zserge/tray for lightweight tray app implementation
 - https://www.flaticon.com/authors/freepik for application icon
+
+## Release

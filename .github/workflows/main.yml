@@ -48,8 +48,9 @@ jobs:
       # Release
       - name: Release
         uses: softprops/action-gh-release@v2
-        if: github.ref_type == 'tag'
         with:
+          tag_name: "latest-build"
+          note: "Automatic build from master"
           files: |
             bin/stadia-vigem-x86.exe
             bin/stadia-vigem-x64.exe
